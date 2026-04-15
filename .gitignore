@@ -1,27 +1,7 @@
-# ── Maven
 target/
-*.jar
-*.war
-*.class
 
-# ── IDE IntelliJ
-.idea/
 *.iml
-*.iws
 *.ipr
 
-# ── IDE Eclipse
-.classpath
-.project
-.settings/
 
-# ── IDE VS Code
 .vscode/
-
-# ── OS
-.DS_Store
-Thumbs.db
-
-# ── Logs
-*.log
-logs/

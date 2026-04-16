@@ -1,6 +1,5 @@
-package com.learn.kafka;
+package com.learn.kafka.producer;
 
-import com.learn.kafka.producer.MessageProducer;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# ─────────────────────────────────────────────
+#  Validation du message de commit
+#  Format attendu : type(scope): message
+#  Exemples :
+#    feat: add multi-currency support
+#    fix: correct Kafka offset reset
+# ─────────────────────────────────────────────
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Types autorisés
+TYPES="feat|fix"
+
+# Regex de validation
+PATTERN="^($TYPES)(\([a-z0-9_-]+\))?: .{1,100}$"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+  echo ""
+  echo "Message de commit invalide !"
+  echo ""
+  echo "   Format attendu  : type(scope): message"
+  echo "   Votre message   : $COMMIT_MSG"
+  echo ""
+  echo "   Types autorisés :"
+  echo "     feat     → nouvelle fonctionnalité"
+  echo "     fix      → correction de bug"
+  echo ""
+  echo "   Exemples valides :"
+  echo "     feat: Récupération des taux de change via l’API externe"
+  echo "     fix: Récupération des taux de change via une nouvelle API externe"
+  echo ""
+  exit 1
+fi
+
+echo "Message de commit valide."
+exit 0 

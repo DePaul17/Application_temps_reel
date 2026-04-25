@@ -1,12 +1,4 @@
-package com.learn.kafka.infrastructure.elasticsearch.kafka.consumer;
-
-import com.learn.kafka.domain.model.ExchangeRateMessage;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
-
-public class ExchangeRateConsumer package com.learn.kafka.infrastructure.kafka.consumer;
+package com.learn.kafka.infrastructure.kafka.consumer;
 
 import com.learn.kafka.domain.model.ExchangeRateMessage;
 import com.learn.kafka.service.ExchangeRateIndexingService;
@@ -43,5 +35,3 @@ public class ExchangeRateConsumer {
         });
     }
 }
-
-

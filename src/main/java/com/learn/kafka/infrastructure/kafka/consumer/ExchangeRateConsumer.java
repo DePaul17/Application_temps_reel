@@ -20,18 +20,10 @@ public class ExchangeRateConsumer {
     )
     public void consume(ExchangeRateMessage message) {
 
-        log.info("📩 Kafka reçu → base='{}', {} taux",
+        log.info("Kafka recu -> base='{}', {} taux",
                 message.getBase(),
                 message.getRates() != null ? message.getRates().size() : 0);
 
-        if (message.getRates() == null) return;
-
-        message.getRates().forEach((target, rate) -> {
-            indexingService.index(
-                    message.getBase(),
-                    target,
-                    rate.doubleValue()
-            );
-        });
+        indexingService.index(message);
     }
 }

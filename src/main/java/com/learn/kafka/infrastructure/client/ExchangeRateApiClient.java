@@ -11,15 +11,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Client HTTP vers l'API externe de taux de change.
- *
- * Responsabilité unique : appeler l'API et convertir la réponse brute
- * en {@link ExchangeRateMessage}. Toute la logique de parsing est ici.
- *
- * Pour changer de provider (ex : Fixer.io, Open Exchange Rates),
- * il suffit de modifier cette classe ou d'en créer une nouvelle.
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -30,11 +21,6 @@ public class ExchangeRateApiClient {
     @Value("${app.exchange-api.url}")
     private String apiUrl;
 
-    /**
-     * Appelle l'API externe et retourne un {@link ExchangeRateMessage}.
-     *
-     * @return le message avec les taux, ou {@code null} si l'API est indisponible
-     */
     @SuppressWarnings("unchecked")
     public ExchangeRateMessage fetchLatestRates() {
         try {
@@ -47,7 +33,7 @@ public class ExchangeRateApiClient {
 
             String base = (String) response.get("base");
             Map<String, Object> rawRates = (Map<String, Object>) response.get("rates");
-            Map<String, Number> cleanRates = parseRates(rawRates);
+            Map<String, Double> cleanRates = parseRates(rawRates);
 
             return new ExchangeRateMessage(base, cleanRates);
 
@@ -57,15 +43,11 @@ public class ExchangeRateApiClient {
         }
     }
 
-    /**
-     * Convertit la map brute (Object) en map typée (Number).
-     * Gère les cas où les valeurs arrivent sous forme de String.
-     */
-    private Map<String, Number> parseRates(Map<String, Object> rawRates) {
-        Map<String, Number> cleanRates = new HashMap<>();
+    private Map<String, Double> parseRates(Map<String, Object> rawRates) {
+        Map<String, Double> cleanRates = new HashMap<>();
         rawRates.forEach((currency, value) -> {
             if (value instanceof Number number) {
-                cleanRates.put(currency, number);
+                cleanRates.put(currency, number.doubleValue());
             } else if (value instanceof String str) {
                 try {
                     cleanRates.put(currency, Double.parseDouble(str.replace(",", ".")));
